@@ -1,5 +1,8 @@
-# starter_repo
-Repo to initialize class repositories from, setups initial CI/CD for gitlab as well
+# CINS465-S18-Examples
+Repo for CINS465 Spring 2019 Code Examples from class
+
+Master: ![coverage-prod](https://gitlab.com/CSUChico/CSUC-CINS465/CINS465-S19-Examples/badges/master/coverage.svg?job=test) ![pipeline-prod](https://gitlab.com/CSUChico/CSUC-CINS465/CINS465-S19-Examples/badges/master/build.svg)
+
 
 ## regular files
 
