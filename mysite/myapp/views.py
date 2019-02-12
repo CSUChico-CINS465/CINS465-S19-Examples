@@ -2,19 +2,22 @@ from django.shortcuts import render
 # from django.http import HttpResponse
 # Create your views here.
 
+from . import models
+
 def index(request):
-    i_list=[]
-    for i in range(200):
-        i_list += ["Item "+str(i)]
+    i_list = models.Suggestion.objects.all()
+    n_list = []
+    for item in i_list:
+        n_list += [item.suggestion_field + "2"]
     context = {
         "body":"Hello World Template Variable",
         "title":"Title Hello",
-        "item_list":i_list[:10]
+        "item_list":n_list
     }
-    return render(request,"base.html", context=context)
+    return render(request, "page.html", context=context)
 
-def page(request, page):
-    i_list=[]
+def page_view(request, page):
+    i_list = []
     p_range = page*10
     for i in range(20*(page+1)):
         i_list += ["Item "+str(i)]
@@ -25,4 +28,4 @@ def page(request, page):
         "page":page,
         "next":page+1
     }
-    return render(request,"page.html", context=context)
+    return render(request, "page.html", context=context)
