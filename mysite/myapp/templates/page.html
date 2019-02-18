@@ -4,9 +4,14 @@
 {{ body }}
 <ul>
 {% for item in item_list %}
-    <li class="button">The item is: {{ item }}</li>
+    <li>{{ item }}</li>
 {% endfor %}
 </ul>
-<p>You're on page {{ page }}</p>
-<a href="/page/{{ next }}/">Next</a>
+<form action="/" method="post">
+{% csrf_token %}
+{{ form.suggestion_field.label }}
+{{ form.suggestion_field }}
+{{ form.suggestion_field.errors }}
+<input type="submit" class="button" value="Add Suggestion">
+</form>
 {% endblock %}
