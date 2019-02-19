@@ -1,12 +1,30 @@
+{% load static %}
 {% include "base.html" %}
+
 
 {% block content %}
 {{ body }}
-<ul>
-{% for item in item_list %}
-    <li>{{ item }}</li>
-{% endfor %}
-</ul>
+<div id="app-4">
+  <span v-if="seen">
+    <ul>
+    {% for item in item_list %}
+        <li>{{ item }}</li>
+    {% endfor %}
+    </ul>
+  </span>
+  <span v-if="unseen">
+  <ul>
+    <li v-for="todo in suggestions">
+      {% verbatim %}
+      {{ todo.suggestion }}
+      {% endverbatim %}
+    </li>
+  </ul>
+  </span>
+</div>
+
+
+
 <form action="/" method="post">
 {% csrf_token %}
 {{ form.suggestion_field.label }}
@@ -14,4 +32,9 @@
 {{ form.suggestion_field.errors }}
 <input type="submit" class="button" value="Add Suggestion">
 </form>
+{% endblock %}
+
+{% block scripts %}
+<script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+<script src="{% static "js/myvue.js" %}"></script>
 {% endblock %}

@@ -9,4 +9,4 @@ def must_be_caps(value):
     return value
 
 class SuggestionForm(forms.Form):
-    suggestion_field = forms.CharField(validators=[must_be_caps],label='Suggestion', max_length=240)
+    suggestion_field = forms.CharField(label='Suggestion', max_length=240)
