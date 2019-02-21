@@ -1,8 +1,8 @@
 from django.shortcuts import render
-from django.utils.html import escape
+# from django.utils.html import escape
 
-from django.http import JsonResponse, HttpResponse
-import json
+from django.http import JsonResponse
+# import json
 # Create your views here.
 
 from . import models
@@ -14,7 +14,7 @@ def index(request):
         form_instance = forms.SuggestionForm(request.POST)
         if form_instance.is_valid():
             print(request.POST)
-            message = escape(form_instance.cleaned_data['suggestion_field'])
+            # message = escape(form_instance.cleaned_data['suggestion_field'])
             new_sugg = models.Suggestion()
             new_sugg.suggestion_field = form_instance.cleaned_data["suggestion_field"]
             new_sugg.save()
@@ -25,7 +25,7 @@ def index(request):
     if request.method == "GET":
         print("GET")
     i_list = models.Suggestion.objects.all()
-    n_list = []
+    # n_list = []
 
     # for item in i_list:
     #     n_list += [item.suggestion_field + "2"]
@@ -54,7 +54,7 @@ def page_view(request, page):
 def suggestions_json(request):
     i_list = models.Suggestion.objects.all()
     resp_list = {}
-    resp_list["suggestions"]=[]
+    resp_list["suggestions"] = []
     for item in i_list:
-        resp_list["suggestions"]+=[{"suggestion":item.suggestion_field}]
+        resp_list["suggestions"] += [{"suggestion":item.suggestion_field}]
     return JsonResponse(resp_list)
