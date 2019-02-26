@@ -4,6 +4,12 @@
 
 {% block content %}
 {{ body }}
+{% if user.is_authenticated %}
+{{ user.username }}
+<a href="/logout/">Logout</a>
+{% else %}
+<a href="/login/">Login</a>
+{% endif %}
 <div id="app-4">
   <span v-if="seen">
     <ul>
@@ -25,6 +31,7 @@
 
 
 
+{% if user.is_authenticated %}
 <form action="/" method="post">
 {% csrf_token %}
 {{ form.suggestion_field.label }}
@@ -32,6 +39,7 @@
 {{ form.suggestion_field.errors }}
 <input type="submit" class="button" value="Add Suggestion">
 </form>
+{% endif %}
 {% endblock %}
 
 {% block scripts %}
