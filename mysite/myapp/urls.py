@@ -9,6 +9,6 @@ urlpatterns = [
     path('login/', auth_views.LoginView.as_view()),
     path('logout/', views.logout_view),
     path('register/', views.register),
-    path('page/<int:page>/', views.page_view),
+    path('comment/<int:sugg>/', views.comment_view),
     path('suggestions/', views.suggestions_json),
 ]

@@ -14,6 +14,10 @@ def must_be_caps(value):
 class SuggestionForm(forms.Form):
     suggestion_field = forms.CharField(label='Suggestion', max_length=240)
 
+class CommentForm(forms.Form):
+    comment_field = forms.CharField(label='Comment', max_length=240)
+
+
 class RegistrationForm(UserCreationForm):
     email = forms.EmailField(
         label="Email",

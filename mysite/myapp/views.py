@@ -22,6 +22,7 @@ def index(request):
             # message = escape(form_instance.cleaned_data['suggestion_field'])
             new_sugg = models.Suggestion()
             new_sugg.suggestion_field = form_instance.cleaned_data["suggestion_field"]
+            new_sugg.suggestion_author = request.user
             new_sugg.save()
             form_instance = forms.SuggestionForm()
     else:
@@ -43,6 +44,29 @@ def index(request):
     return render(request, "page.html", context=context)
 
 @login_required(login_url="/login/")
+def comment_view(request, sugg):
+    if request.method == "POST":
+        form_instance = forms.CommentForm(request.POST)
+        if form_instance.is_valid():
+            sugg_instance = models.Suggestion.objects.get(id=sugg)
+            new_comm = models.Comment()
+            new_comm.comment_field = form_instance.cleaned_data["comment_field"]
+            new_comm.comment_suggestion = sugg_instance
+            new_comm.comment_author = request.user
+            new_comm.save()
+            return redirect("/")
+    else:
+        form_instance = forms.CommentForm()
+    context = {
+        "body":"Hello World Template Variable",
+        "title":"Title Hello",
+        "form":form_instance,
+        "suggestion":sugg
+    }
+    return render(request, "comment.html", context=context)
+
+
+@login_required(login_url="/login/")
 def page_view(request, page):
     i_list = []
     p_range = page*10
@@ -62,7 +86,11 @@ def suggestions_json(request):
     resp_list = {}
     resp_list["suggestions"] = []
     for item in i_list:
-        resp_list["suggestions"] += [{"suggestion":item.suggestion_field}]
+        resp_list["suggestions"] += [{
+            "suggestion":item.suggestion_field,
+            "author":item.suggestion_author.username,
+            "id":item.id
+        }]
     return JsonResponse(resp_list)
 
 def logout_view(request):

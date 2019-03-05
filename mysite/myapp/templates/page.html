@@ -14,7 +14,7 @@
   <span v-if="seen">
     <ul>
     {% for item in item_list %}
-        <li>{{ item }}</li>
+        <li>{{ item.suggestion_field }} - {{ item.suggestion_author.username }} - <a href="comment/{{ item.id }}/">comment</a></li>
     {% endfor %}
     </ul>
   </span>
@@ -22,7 +22,7 @@
   <ul>
     <li v-for="todo in suggestions">
       {% verbatim %}
-      {{ todo.suggestion }}
+      {{ todo.suggestion }} - {{ todo.author }} - <a v-bind:href="'/comment/'+ todo.id + '/'">comment</a>
       {% endverbatim %}
     </li>
   </ul>
