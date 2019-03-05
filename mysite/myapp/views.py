@@ -101,7 +101,7 @@ def register(request):
     if request.method == "POST":
         form_instance = forms.RegistrationForm(request.POST)
         if form_instance.is_valid():
-            user = form_instance.save()
+            form_instance.save()
             return redirect("/login/")
             # print("Hi")
     else:
