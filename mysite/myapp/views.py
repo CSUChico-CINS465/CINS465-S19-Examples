@@ -39,7 +39,8 @@ def index(request):
         "body":"Hello World Template Variable",
         "title":"Title Hello",
         "item_list":i_list,
-        "form":form_instance
+        "form":form_instance,
+        "comm_form":forms.CommentForm()
     }
     return render(request, "page.html", context=context)
 
@@ -86,10 +87,22 @@ def suggestions_json(request):
     resp_list = {}
     resp_list["suggestions"] = []
     for item in i_list:
+        comments_list = []
+        comm_list = models.Comment.objects.filter(comment_suggestion=item)
+        for comm in comm_list:
+            comments_list += [{
+                "comment":comm.comment_field,
+                "author":comm.comment_author.username,
+                "id":comm.id,
+                "created_on":comm.created_on
+            }]
         resp_list["suggestions"] += [{
             "suggestion":item.suggestion_field,
             "author":item.suggestion_author.username,
-            "id":item.id
+            "id":item.id,
+            "comments":comments_list,
+            "created_on":item.created_on,
+            "num_comments":len(comments_list)
         }]
     return JsonResponse(resp_list)
 

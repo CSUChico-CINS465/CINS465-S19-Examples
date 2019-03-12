@@ -3,12 +3,14 @@
 
 
 {% block content %}
-{{ body }}
 {% if user.is_authenticated %}
-{{ user.username }}
-<a href="/logout/">Logout</a>
-{% else %}
-<a href="/login/">Login</a>
+<form action="/" method="post">
+{% csrf_token %}
+{{ form.suggestion_field.label }}
+{{ form.suggestion_field }}
+{{ form.suggestion_field.errors }}
+<input type="submit" class="button" value="Add Suggestion">
+</form>
 {% endif %}
 <div id="app-4">
   <span v-if="seen">
@@ -19,27 +21,44 @@
     </ul>
   </span>
   <span v-if="unseen">
-  <ul>
-    <li v-for="todo in suggestions">
+  <div v-for="todo in suggestions" >
       {% verbatim %}
-      {{ todo.suggestion }} - {{ todo.author }} - <a v-bind:href="'/comment/'+ todo.id + '/'">comment</a>
+      <div class="card-info secondary">
+        <div class="card-info-content">
+          <h3 class="lead">{{ todo.suggestion }}</h3>
+          <p>authored by {{ todo.author }} on {{ todo.created_on }}</p>
+          <p>{{ todo.num_comments }} comments</p>
+        </div>
+      </div>
+      <div class="grid-container">
+         <div class="grid-x grid-padding-x">
+           <div v-for="comm in todo.comments" class="large-10 large-offset-2 cell">
+             <div class="card-info secondary">
+                <h3 class="lead">{{ comm.comment }}</h3>
+                <p>authored by {{ comm.author }} on {{ comm.created_on }}</p>
+              </div>
+            </div>
+            <div class="large-10 large-offset-2 cell">
+              <form v-bind:action="'/comment/'+ todo.id+'/'" method="post">
+                  {% endverbatim %}
+                  {% csrf_token %}
+                  <!-- <h4 class="text-center">Comment</h4> -->
+                  {{ comm_form }}
+                  {% verbatim %}
+                  <input type="submit" class="button expanded" value="Comment" />
+              </form>
+            </div>
+          </div>
+      </div>
+
       {% endverbatim %}
-    </li>
-  </ul>
+</div>
   </span>
 </div>
 
 
 
-{% if user.is_authenticated %}
-<form action="/" method="post">
-{% csrf_token %}
-{{ form.suggestion_field.label }}
-{{ form.suggestion_field }}
-{{ form.suggestion_field.errors }}
-<input type="submit" class="button" value="Add Suggestion">
-</form>
-{% endif %}
+
 {% endblock %}
 
 {% block scripts %}
